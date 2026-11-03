@@ -41,13 +41,13 @@
       <span class="font-serif italic text-3xl gold-text leading-none">Essence</span>
       <span class="hidden sm:inline text-[10px] tracking-[0.35em] text-cream/80">CRESPO</span>
     </a>
-    <nav class="flex items-center gap-5 text-sm" aria-label="Principal">
+    <nav class="flex items-center gap-3 sm:gap-5 text-sm" aria-label="Principal">
       <a href="#inicio" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Inicio</a>
-      <a href="#filtros" class="text-cream/70 hover:text-goldlight transition">Catálogo</a>
+      <a href="#filtros" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Catálogo</a>
       <a href="#nosotros" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Nosotros</a>
       <a href="#preguntas" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Preguntas</a>
-      <a href="#contacto" class="text-cream/70 hover:text-goldlight transition">Contacto</a>
-      <button type="button" data-open-cart aria-label="Abrir carrito" class="relative rounded-full border border-line w-10 h-10 flex items-center justify-center text-goldlight hover:border-gold transition">
+      <a href="#contacto" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Contacto</a>
+      <button type="button" data-open-cart aria-label="Abrir carrito" class="relative hidden sm:flex rounded-full border border-line w-10 h-10 items-center justify-center text-goldlight hover:border-gold transition">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
         <span data-cart-badge class="hidden absolute -top-1.5 -right-1.5 rounded-full bg-gold text-ink text-[11px] font-medium min-w-[1.25rem] h-5 px-1 items-center justify-center"></span>
       </button>
@@ -60,15 +60,15 @@
 <!-- ============ ENCABEZADO PRINCIPAL ============ -->
 <section id="inicio" class="relative overflow-hidden border-b border-line">
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,169,78,.12),transparent_60%)]" aria-hidden="true"></div>
-  <div class="relative max-w-4xl mx-auto px-6 py-20 sm:py-28 text-center">
-    <h1 class="font-serif italic text-6xl sm:text-8xl gold-text leading-tight">Essence</h1>
+  <div class="relative max-w-4xl mx-auto px-6 py-14 sm:py-28 text-center">
+    <h1 class="font-serif italic text-5xl sm:text-8xl gold-text leading-tight">Essence</h1>
     <div class="mt-4 flex items-center justify-center gap-4" aria-hidden="true">
       <span class="h-px w-12 sm:w-24 bg-cream/60"></span>
       <span class="tracking-[0.5em] text-cream text-lg sm:text-xl">CRESPO</span>
       <span class="h-px w-12 sm:w-24 bg-cream/60"></span>
     </div>
     <p class="mt-3 tracking-[0.4em] text-xs text-golddark">PERFUMES</p>
-    <p class="mt-10 text-cream/75 text-base sm:text-lg max-w-2xl mx-auto font-light">
+    <p class="mt-6 sm:mt-10 text-cream/75 text-base sm:text-lg max-w-2xl mx-auto font-light">
       Extrait de Parfum Essence en 60 ml. Explorá fragancias árabes, de nicho y de diseñador, y consultá por la que más te represente.
     </p>
     <a href="#filtros" class="inline-block mt-8 rounded-full bg-gold text-ink font-medium px-8 py-3 hover:bg-goldlight transition">Explorar catálogo</a>
@@ -76,15 +76,15 @@
 </section>
 
 <!-- ============ BUSCADOR Y FILTROS (visibles siempre) ============ -->
-<section id="filtros" class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 scroll-mt-20">
-  <h2 class="font-serif text-4xl sm:text-5xl">Encontrá tu <span class="italic gold-text">fragancia</span></h2>
-  <p class="mt-2 text-sm text-cream/60">Buscá por nombre o nota y sumá todos los filtros que quieras.</p>
+<section id="filtros" class="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 scroll-mt-20">
+  <h2 class="font-serif text-3xl sm:text-5xl">Encontrá tu <span class="italic gold-text">fragancia</span></h2>
+  <p class="mt-2 text-sm text-cream/60">Buscá por nombre o nota. Con Enter, lo que escribiste se suma como filtro.</p>
   <!-- Barra principal: búsqueda, botón de filtros y orden -->
   <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
     <div class="relative flex-1">
       <label for="searchInput" class="sr-only">Buscar perfumes</label>
       <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="searchInput" type="search" autocomplete="off" placeholder="Buscá por nombre o nota (Enter para sumarla como filtro)"
+      <input id="searchInput" type="search" autocomplete="off" placeholder="Buscá un perfume o una nota…"
         class="w-full bg-panel border border-line rounded-full pl-11 pr-4 py-3 text-sm placeholder:text-cream/40 focus:border-gold focus:outline-none">
     </div>
     <div class="flex gap-3">
@@ -113,27 +113,27 @@
 </section>
 
 <!-- ============ COLECCIONES (se muestran mientras no haya filtros) ============ -->
-<section id="colecciones" class="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-14 scroll-mt-20">
-  <h2 class="font-serif text-4xl sm:text-5xl">Elegí una <span class="italic gold-text">colección</span></h2>
+<section id="colecciones" class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-10 sm:pb-14 scroll-mt-20">
+  <h2 class="font-serif text-3xl sm:text-5xl">Elegí una <span class="italic gold-text">colección</span></h2>
   <p class="mt-2 text-sm text-cream/60">Tres universos de fragancias. Entrá a uno para ver todos sus perfumes.</p>
-  <div id="collectionGrid" class="mt-8 grid gap-5 md:grid-cols-3"></div>
+  <div id="collectionGrid" class="mt-6 sm:mt-8 grid gap-4 sm:gap-5 md:grid-cols-3"></div>
   <div class="mt-8 text-center">
     <button type="button" data-collection="Todas" class="rounded-full border border-line px-6 py-3 text-sm text-cream/80 hover:border-gold hover:text-goldlight transition">Ver todo el catálogo</button>
   </div>
 </section>
 
 <!-- ============ CATÁLOGO ============ -->
-<section id="catalogo" class="hidden max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-14 scroll-mt-20">
+<section id="catalogo" class="hidden max-w-7xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-10 sm:pb-14 scroll-mt-20">
   <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
     <div>
       <button id="backToCollections" type="button" class="mb-3 text-sm text-goldlight hover:underline underline-offset-4">← Volver a las colecciones</button>
-      <h2 id="catalogTitle" class="font-serif text-4xl sm:text-5xl"></h2>
+      <h2 id="catalogTitle" class="font-serif text-3xl sm:text-5xl"></h2>
       <p id="resultCount" class="mt-2 text-sm text-cream/60" role="status" aria-live="polite"></p>
     </div>
   </div>
 
   <!-- Grilla de productos -->
-  <div id="productGrid" class="mt-8 grid gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+  <div id="productGrid" class="mt-6 sm:mt-8 grid gap-3 sm:gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
 
   <!-- Paginación: botón "Mostrar más" -->
   <div id="loadMoreWrap" class="hidden mt-10 text-center">
@@ -150,8 +150,8 @@
 </section>
 <!-- ============ SOBRE NOSOTROS ============ -->
 <section id="nosotros" class="border-t border-line scroll-mt-20">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-    <h2 class="font-serif text-4xl sm:text-5xl">Sobre <span class="italic gold-text">nosotros</span></h2>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <h2 class="font-serif text-3xl sm:text-5xl">Sobre <span class="italic gold-text">nosotros</span></h2>
     <div class="mt-6 grid gap-6 md:grid-cols-2 text-cream/75 leading-relaxed">
       <p>Somos <strong class="text-cream font-medium">Essence Crespo</strong>, un emprendimiento de Crespo, Entre Ríos, dedicado a la reventa de perfumes. Como revendedores, reunimos en un solo catálogo fragancias árabes, de nicho y de diseñador para que puedas elegir con calma y pedir de forma simple.</p>
       <p>Cada perfume se ofrece en 60 ml y tiene su ficha con las notas de salida, corazón y fondo, para ayudarte a encontrar el que mejor va con vos. Atendemos de manera personal por WhatsApp: si dudás entre dos, te ayudamos a decidir.</p>
@@ -170,8 +170,8 @@
 
 <!-- ============ PREGUNTAS FRECUENTES ============ -->
 <section id="preguntas" class="border-t border-line scroll-mt-20">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-    <h2 class="font-serif text-4xl sm:text-5xl">Preguntas <span class="italic gold-text">frecuentes</span></h2>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <h2 class="font-serif text-3xl sm:text-5xl">Preguntas <span class="italic gold-text">frecuentes</span></h2>
     <p class="mt-2 text-sm text-cream/60">Respondemos las dudas más comunes. Si no encontrás la tuya, escribinos.</p>
     <div id="faqList" class="mt-8 space-y-3"></div>
     <p class="mt-8 text-sm text-cream/70">¿Tenés otra consulta? <a id="faqWhatsapp" href="#" target="_blank" rel="noopener" class="text-goldlight underline underline-offset-4 hover:text-goldlight">Escribinos por WhatsApp</a>.</p>
@@ -224,8 +224,15 @@
   </div>
 </div>
 
+<!-- Botón flotante del carrito (solo en celular) -->
+<button id="floatingCart" type="button" data-open-cart aria-haspopup="dialog" aria-label="Abrir carrito"
+  class="sm:hidden fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-gold text-ink shadow-xl shadow-black/60 flex items-center justify-center hover:bg-goldlight transition">
+  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+  <span data-cart-badge class="hidden absolute -top-1 -right-1 rounded-full bg-ink text-goldlight border border-gold text-[11px] font-medium min-w-[1.25rem] h-5 px-1 items-center justify-center"></span>
+</button>
+
 <!-- Aviso breve al agregar (no bloquea la navegación) -->
-<div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] hidden rounded-full bg-panel border border-gold/60 text-cream text-sm px-5 py-2.5 shadow-xl"></div>
+<div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-[60] hidden w-max max-w-[85vw] text-center rounded-full bg-panel border border-gold/60 text-cream text-sm px-5 py-2.5 shadow-xl"></div>
 
 <!-- ============ VENTANA DE FILTROS ============ -->
 <div id="filterModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80" role="presentation">
@@ -268,10 +275,10 @@
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
     <div class="grid sm:grid-cols-2">
-      <div class="bg-black sm:rounded-l-2xl overflow-hidden flex items-center"><img id="modalImage" alt="" class="w-full h-auto max-h-[70vh] sm:max-h-[85vh] object-contain"></div>
-      <div class="p-6 sm:p-8">
+      <div class="bg-black sm:rounded-l-2xl overflow-hidden flex items-center"><img id="modalImage" alt="" class="w-full h-auto max-h-[42vh] sm:max-h-[85vh] object-contain"></div>
+      <div class="p-5 sm:p-8">
         <p id="modalCategory" class="text-xs tracking-[0.25em] uppercase text-golddark"></p>
-        <h3 id="modalTitle" class="font-serif text-3xl sm:text-4xl mt-1 leading-tight"></h3>
+        <h3 id="modalTitle" class="font-serif text-2xl sm:text-4xl mt-1 leading-tight"></h3>
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <span id="modalPrice" class="text-2xl text-goldlight font-medium"></span>
           <span id="modalStock"></span>
@@ -279,8 +286,10 @@
         <p id="modalDescription" class="mt-4 text-sm text-cream/75 leading-relaxed"></p>
         <div id="modalNotes" class="mt-5 space-y-2 text-sm"></div>
         <dl id="modalMeta" class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm"></dl>
-        <button id="modalAddCart" type="button" class="mt-6 w-full rounded-full border border-gold/60 text-goldlight font-medium py-3 hover:bg-gold hover:text-ink transition">Agregar al carrito</button>
-        <a id="modalWhatsapp" href="#" target="_blank" rel="noopener" class="mt-3 flex items-center justify-center rounded-full bg-gold text-ink font-medium py-3 hover:bg-goldlight transition"></a>
+        <div class="sticky bottom-0 -mx-5 -mb-5 mt-5 px-4 py-3 bg-panel border-t border-line flex gap-2 sm:static sm:mx-0 sm:mb-0 sm:mt-6 sm:px-0 sm:py-0 sm:border-0 sm:bg-transparent sm:flex-col sm:gap-3">
+          <button id="modalAddCart" type="button" class="flex-1 rounded-full border border-gold/60 text-goldlight font-medium text-sm py-3 hover:bg-gold hover:text-ink transition">Agregar al carrito</button>
+          <a id="modalWhatsapp" href="#" target="_blank" rel="noopener" class="flex-1 flex items-center justify-center text-center leading-tight rounded-full bg-gold text-ink font-medium text-sm py-3 hover:bg-goldlight transition"></a>
+        </div>
       </div>
     </div>
   </div>
@@ -3531,7 +3540,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Masculino",
   "tamano": "60 ml",
-  "precio": 234000,
+  "precio": 187000,
   "stock": true,
   "descripcionBreve": "Ananá · Grosella negra · Abedul · Musgo de roble",
   "descripcionDetallada": "La apertura frutal de ananá es inconfundible, y debajo aparece un abedul ahumado que le da el contraste. Es la referencia de este estilo. Extrait de Parfum Essence en 60 ml.",
@@ -3581,7 +3590,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Masculino",
   "tamano": "60 ml",
-  "precio": 262000,
+  "precio": 147000,
   "stock": true,
   "descripcionBreve": "Pomelo · Ananá · Vetiver de Haití · Pachulí · Bergamota · Limón · Jengibre · Canela · Cardamomo",
   "descripcionDetallada": "Pomelo y ananá con vetiver de Haití y pachulí, y un tramo de jengibre, canela y cardamomo. Es la lectura más cítrica y especiada del Aventus. Extrait de Parfum Essence en 60 ml.",
@@ -3613,7 +3622,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Masculino",
   "tamano": "60 ml",
-  "precio": 281000,
+  "precio": 158000,
   "stock": true,
   "descripcionBreve": "Bergamota de Calabria · Ylang ylang · Sándalo · Oud",
   "descripcionDetallada": "Bergamota de Calabria sola arriba, un corazón de ylang ylang y jazmín, y un fondo de sándalo, oud y vainilla bourbon. Amaderado y floral a la vez, con el oud puesto atrás. Extrait de Parfum Essence en 60 ml.",
@@ -6450,7 +6459,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Masculino",
   "tamano": "60 ml",
-  "precio": 248000,
+  "precio": 198000,
   "stock": true,
   "descripcionBreve": "Coñac · Canela · Praliné · Almendra confitada",
   "descripcionDetallada": "Coñac, canela y almendra confitada sobre madera de roble. Es de los gourmands más elegantes que existen. Extrait de Parfum Essence en 60 ml.",
@@ -7804,7 +7813,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Femenino",
   "tamano": "60 ml",
-  "precio": 217000,
+  "precio": 174000,
   "stock": true,
   "descripcionBreve": "Azafrán · Amberwood · Azúcar · Cedro",
   "descripcionDetallada": "Azafrán y jazmín en la salida, amberwood y ámbar gris en el corazón, y cedro, azúcar y musgo de roble en el fondo. El conjunto es amaderado y ambarado. Extrait de Parfum Essence en 60 ml.",
@@ -9083,7 +9092,7 @@ const PRODUCTS = [
   "categoria": "Nicho",
   "genero": "Femenino",
   "tamano": "60 ml",
-  "precio": 200000,
+  "precio": 160000,
   "stock": true,
   "descripcionBreve": "Lichi · Rosa de Turquía · Peonía · Cashmeran",
   "descripcionDetallada": "Rosa y lichi con una frescura frutal arriba. Es floral, expresivo y con un carácter muy marcado. Extrait de Parfum Essence en 60 ml.",
@@ -11639,17 +11648,21 @@ function renderProductCard(p) {
       <img src="${escapeHTML(p.imagen || PLACEHOLDER_IMG)}" alt="Perfume ${escapeHTML(p.nombre)}" loading="lazy" onerror="imgFallback(this)" style="aspect-ratio:auto 4/5" class="w-full h-auto block">
       ${p.stock ? '' : '<span class="absolute top-3 left-3 bg-ink/85 border border-line text-red-300 text-[11px] px-2.5 py-1 rounded-full">Sin stock</span>'}
     </div>
-    <div class="p-4 flex flex-col flex-1">
-      <p class="text-[11px] tracking-[0.2em] uppercase text-golddark">${escapeHTML(p.categoria)} · ${escapeHTML(p.genero)}</p>
-      <h3 class="font-serif text-xl leading-snug mt-1">${escapeHTML(p.nombre)}</h3>
-      <p class="text-xs text-cream/60 mt-2 line-clamp-2">${escapeHTML(p.descripcionBreve)}</p>
-      <div class="mt-3 flex items-center justify-between">
-        <span class="text-goldlight font-medium">${formatPrice(p.precio)}</span>
-        ${p.stock ? stockBadge(p) : ''}
+    <div class="p-3 sm:p-4 flex flex-col flex-1">
+      <p class="text-[10px] sm:text-[11px] tracking-[0.12em] sm:tracking-[0.2em] uppercase text-golddark">${escapeHTML(p.categoria)}<span class="hidden sm:inline"> · ${escapeHTML(p.genero)}</span></p>
+      <h3 class="font-serif text-base sm:text-xl leading-snug mt-1">${escapeHTML(p.nombre)}</h3>
+      <p class="max-sm:hidden text-xs text-cream/60 mt-2 line-clamp-2">${escapeHTML(p.descripcionBreve)}</p>
+      <div class="mt-2 sm:mt-3 flex items-center justify-between">
+        <span class="text-goldlight font-medium text-sm sm:text-base">${formatPrice(p.precio)}</span>
+        <span class="hidden sm:inline">${p.stock ? stockBadge(p) : ''}</span>
       </div>
-      <button type="button" data-product-id="${p.id}" class="open-modal mt-4 w-full rounded-full bg-gold text-ink text-sm font-medium py-2.5 hover:bg-goldlight transition">Ver detalles</button>
-      ${p.stock ? `<button type="button" data-add-cart="${p.id}" class="mt-2 w-full rounded-full border border-gold/60 text-goldlight text-sm py-2.5 hover:bg-gold hover:text-ink transition">Agregar al carrito</button>
-      <p data-in-cart="${p.id}" class="mt-2 text-center text-xs text-emerald-300 ${cartQty(p.id) ? '' : 'hidden'}">En el carrito: ${cartQty(p.id)}</p>` : ''}
+      <div class="mt-3 sm:mt-4 flex gap-2 sm:block">
+        <button type="button" data-product-id="${p.id}" class="open-modal flex-1 sm:w-full rounded-full bg-gold text-ink text-xs sm:text-sm font-medium py-2.5 hover:bg-goldlight transition">Ver detalles</button>
+        ${p.stock ? `<button type="button" data-add-cart="${p.id}" aria-label="Agregar ${escapeHTML(p.nombre)} al carrito" class="shrink-0 w-10 h-10 sm:w-full sm:h-auto sm:mt-2 flex items-center justify-center rounded-full border border-gold/60 text-goldlight text-sm sm:py-2.5 hover:bg-gold hover:text-ink transition">
+          <svg class="w-4 h-4 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+          <span class="hidden sm:inline">Agregar al carrito</span></button>` : ''}
+      </div>
+      ${p.stock ? `<p data-in-cart="${p.id}" class="mt-2 text-center text-xs text-emerald-300 ${cartQty(p.id) ? '' : 'hidden'}">En el carrito: ${cartQty(p.id)}</p>` : ''}
     </div>
   </article>`;
 }
@@ -11947,7 +11960,7 @@ function renderCart(focusSelector) {
   }
   $('cartItems').innerHTML = lines.map(({ product: p, qty }) => `
     <div class="flex items-center gap-3 border border-line rounded-xl p-3">
-      <img src="${escapeHTML(p.imagen || PLACEHOLDER_IMG)}" alt="" onerror="imgFallback(this)" class="w-12 h-14 object-contain bg-black rounded-md shrink-0">
+      <img src="${escapeHTML(p.imagen || PLACEHOLDER_IMG)}" alt="" onerror="imgFallback(this)" class="hidden sm:block w-12 h-14 object-contain bg-black rounded-md shrink-0">
       <div class="flex-1 min-w-0">
         <p class="text-sm leading-snug">${escapeHTML(p.nombre)}</p>
         ${CONFIG.mostrarPreciosEnCarrito ? `<p class="text-xs text-cream/60 mt-0.5">${qty > 1 ? `${formatPrice(p.precio)} c/u · ` : ''}<span class="text-goldlight font-medium">${formatPrice((p.precio || 0) * qty)}</span></p>` : ''}
@@ -11975,6 +11988,7 @@ function renderCart(focusSelector) {
 
 function openCart(opener) {
   cartOpener = opener || $('openCart');
+  $('toast').classList.add('hidden');
   renderCart();
   $('cartModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
