@@ -27,6 +27,8 @@
   .fade-in { animation: fade .35s ease both; }
   @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   :focus-visible { outline: 2px solid #f3d98a; outline-offset: 2px; }
 </style>
 </head>
@@ -43,6 +45,10 @@
       <a href="#inicio" class="hidden sm:inline text-cream/70 hover:text-goldlight transition">Inicio</a>
       <a href="#filtros" class="text-cream/70 hover:text-goldlight transition">Catálogo</a>
       <a href="#contacto" class="text-cream/70 hover:text-goldlight transition">Contacto</a>
+      <button type="button" data-open-cart aria-label="Abrir carrito" class="relative rounded-full border border-line w-10 h-10 flex items-center justify-center text-goldlight hover:border-gold transition">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+        <span data-cart-badge class="hidden absolute -top-1.5 -right-1.5 rounded-full bg-gold text-ink text-[11px] font-medium min-w-[1.25rem] h-5 px-1 items-center justify-center"></span>
+      </button>
       <a id="navWhatsapp" href="#" target="_blank" rel="noopener" class="rounded-full border border-gold/60 text-goldlight px-4 py-1.5 hover:bg-gold hover:text-ink transition">WhatsApp</a>
     </nav>
   </div>
@@ -79,10 +85,16 @@
       <input id="searchInput" type="search" autocomplete="off" placeholder="Buscá por nombre o nota (Enter para sumarla como filtro)"
         class="w-full bg-panel border border-line rounded-full pl-11 pr-4 py-3 text-sm placeholder:text-cream/40 focus:border-gold focus:outline-none">
     </div>
-    <button id="openFilters" type="button" aria-haspopup="dialog" class="inline-flex items-center justify-center gap-2 rounded-full border border-gold/60 text-goldlight px-6 py-3 text-sm hover:bg-gold hover:text-ink transition">
+    <div class="flex gap-3">
+    <button id="openFilters" type="button" aria-haspopup="dialog" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full border border-gold/60 text-goldlight px-6 py-3 text-sm hover:bg-gold hover:text-ink transition">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
       Filtros <span id="filterBadge" class="hidden rounded-full bg-gold text-ink text-xs font-medium min-w-[1.25rem] h-5 px-1.5 items-center justify-center"></span>
     </button>
+    <button id="openCart" type="button" data-open-cart aria-haspopup="dialog" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full border border-gold/60 text-goldlight px-6 py-3 text-sm hover:bg-gold hover:text-ink transition">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+      Carrito <span data-cart-badge class="hidden rounded-full bg-gold text-ink text-xs font-medium min-w-[1.25rem] h-5 px-1.5 items-center justify-center"></span>
+    </button>
+    </div>
     <div class="flex items-center gap-2">
       <label for="sortSelect" class="text-xs text-cream/60">Ordenar</label>
       <select id="sortSelect" class="bg-panel border border-line rounded-full px-4 py-3 text-sm focus:border-gold focus:outline-none">
@@ -157,6 +169,31 @@
   <p class="text-center text-xs text-cream/40 pb-6">© <span id="year"></span> Essence Crespo Perfumes. Los precios y la disponibilidad pueden cambiar.</p>
 </footer>
 
+<!-- ============ CARRITO ============ -->
+<div id="cartModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80" role="presentation">
+  <div role="dialog" aria-modal="true" aria-labelledby="cartTitle" tabindex="-1"
+       class="w-full sm:max-w-lg max-h-[90vh] flex flex-col bg-panel border border-line rounded-t-2xl sm:rounded-2xl shadow-2xl fade-in">
+    <div class="flex items-center justify-between p-5 border-b border-line">
+      <h3 id="cartTitle" class="font-serif text-2xl">Tu carrito</h3>
+      <button id="cartClose" type="button" aria-label="Cerrar carrito" class="w-10 h-10 rounded-full border border-line hover:border-gold hover:text-goldlight transition flex items-center justify-center">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="cartItems" class="overflow-y-auto p-5 space-y-3 flex-1"></div>
+    <div class="p-5 border-t border-line">
+      <p id="cartSummary" class="text-sm text-cream/80"></p>
+      <div class="mt-4 flex items-center justify-between gap-3">
+        <button id="cartClear" type="button" class="rounded-full border border-line px-5 py-3 text-sm text-cream/80 hover:border-gold hover:text-goldlight transition">Vaciar carrito</button>
+        <a id="cartCheckout" href="#" target="_blank" rel="noopener" class="rounded-full bg-gold text-ink font-medium px-6 py-3 text-sm hover:bg-goldlight transition text-center">Finalizar compra</a>
+      </div>
+      <p class="mt-3 text-xs text-cream/50">Se abrirá WhatsApp con tu pedido completo para que lo envíes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Aviso breve al agregar (no bloquea la navegación) -->
+<div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] hidden rounded-full bg-panel border border-gold/60 text-cream text-sm px-5 py-2.5 shadow-xl"></div>
+
 <!-- ============ VENTANA DE FILTROS ============ -->
 <div id="filterModal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80" role="presentation">
   <div role="dialog" aria-modal="true" aria-labelledby="filterTitle" tabindex="-1"
@@ -209,7 +246,8 @@
         <p id="modalDescription" class="mt-4 text-sm text-cream/75 leading-relaxed"></p>
         <div id="modalNotes" class="mt-5 space-y-2 text-sm"></div>
         <dl id="modalMeta" class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm"></dl>
-        <a id="modalWhatsapp" href="#" target="_blank" rel="noopener" class="mt-6 flex items-center justify-center rounded-full bg-gold text-ink font-medium py-3 hover:bg-goldlight transition"></a>
+        <button id="modalAddCart" type="button" class="mt-6 w-full rounded-full border border-gold/60 text-goldlight font-medium py-3 hover:bg-gold hover:text-ink transition">Agregar al carrito</button>
+        <a id="modalWhatsapp" href="#" target="_blank" rel="noopener" class="mt-3 flex items-center justify-center rounded-full bg-gold text-ink font-medium py-3 hover:bg-goldlight transition"></a>
       </div>
     </div>
   </div>
@@ -227,6 +265,8 @@ const CONFIG = {
   instagram: '@essencecrespo',            // ⚠️ de ejemplo
   ciudad: 'Crespo, Entre Ríos',           // ⚠️ confirmá o cambiá
   horarios: 'Lunes a sábados de 9 a 20 h', // ⚠️ de ejemplo
+  // Cuando cargues los precios reales, poné true para mostrar precios y total en el carrito y en el pedido de WhatsApp.
+  mostrarPreciosEnCarrito: false,
   moneda: { locale: 'es-AR', currency: 'ARS' }
 };
 
@@ -11560,6 +11600,8 @@ function renderProductCard(p) {
         ${p.stock ? stockBadge(p) : ''}
       </div>
       <button type="button" data-product-id="${p.id}" class="open-modal mt-4 w-full rounded-full bg-gold text-ink text-sm font-medium py-2.5 hover:bg-goldlight transition">Ver detalles</button>
+      ${p.stock ? `<button type="button" data-add-cart="${p.id}" class="mt-2 w-full rounded-full border border-gold/60 text-goldlight text-sm py-2.5 hover:bg-gold hover:text-ink transition">Agregar al carrito</button>
+      <p data-in-cart="${p.id}" class="mt-2 text-center text-xs text-emerald-300 ${cartQty(p.id) ? '' : 'hidden'}">En el carrito: ${cartQty(p.id)}</p>` : ''}
     </div>
   </article>`;
 }
@@ -11738,6 +11780,8 @@ function openModal(productId, triggerElement) {
   $('modalMeta').innerHTML =
     metaItem('Familias', p.familias) + metaItem('Carácter', p.caracter) + metaItem('Ocasión', p.ocasion) + metaItem('Clima', p.clima);
 
+  $('modalAddCart').dataset.addCart = p.id;
+  $('modalAddCart').classList.toggle('hidden', !p.stock);
   const wa = $('modalWhatsapp');
   wa.href = buildWhatsAppLink(p);
   wa.textContent = p.stock ? 'Pedir por WhatsApp' : 'Consultar disponibilidad por WhatsApp';
@@ -11764,6 +11808,174 @@ function trapFocus(e) {
 }
 
 /* =====================================================================
+   6b. CARRITO DE COMPRAS
+   El carrito guarda { idProducto: cantidad } y se conserva en el navegador (localStorage).
+   ===================================================================== */
+const CART_KEY = 'essence-crespo-carrito-v1';
+const MAX_QTY = 99;
+// Las claves llevan prefijo "p" para que el carrito conserve el orden en que se agregó cada producto
+const cartKey = (id) => 'p' + id;
+let cart = {};
+let cartOpener = null;
+let toastTimer = null;
+
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
+    cart = {};
+    Object.entries(saved).forEach(([key, qty]) => {
+      const product = PRODUCTS.find((p) => cartKey(p.id) === key);
+      const n = Math.min(MAX_QTY, parseInt(qty, 10));
+      if (product && product.stock && n > 0) cart[key] = n;   // se descartan productos que ya no existen o sin stock
+    });
+  } catch (error) { cart = {}; }
+}
+function saveCart() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (error) { /* sin almacenamiento: el carrito sigue funcionando en esta visita */ } }
+function cartQty(id) { return cart[cartKey(id)] || 0; }
+function cartCount() { return Object.values(cart).reduce((sum, n) => sum + n, 0); }
+function cartLines() { return Object.entries(cart).map(([key, qty]) => ({ product: PRODUCTS.find((p) => cartKey(p.id) === key), qty })).filter((l) => l.product); }
+
+function showToast(message) {
+  const toast = $('toast');
+  toast.textContent = message;
+  toast.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add('hidden'), 1800);
+}
+
+function setQty(id, qty) {
+  const n = Math.max(0, Math.min(MAX_QTY, Math.floor(Number(qty)) || 0));
+  if (n === 0) delete cart[cartKey(id)]; else cart[cartKey(id)] = n;
+  saveCart();
+  refreshCartUI();
+}
+function addToCart(id) {
+  const product = PRODUCTS.find((p) => p.id === id);
+  if (!product || !product.stock) return;
+  setQty(id, cartQty(id) + 1);
+  showToast(`${product.nombre} agregado (${cartQty(id)} en el carrito)`);
+}
+
+// Actualiza contadores, avisos de las tarjetas y la ventana si está abierta
+function refreshCartUI() {
+  const count = cartCount();
+  document.querySelectorAll('[data-cart-badge]').forEach((badge) => {
+    badge.textContent = count;
+    badge.classList.toggle('hidden', count === 0);
+    badge.classList.toggle('inline-flex', count > 0);
+  });
+  document.querySelectorAll('[data-in-cart]').forEach((el) => {
+    const qty = cartQty(el.dataset.inCart);
+    el.textContent = `En el carrito: ${qty}`;
+    el.classList.toggle('hidden', qty === 0);
+  });
+  if (!$('cartModal').classList.contains('hidden')) renderCart();
+}
+
+function buildCartWhatsAppLink() {
+  const lines = cartLines();
+  let text = 'Hola Essence Crespo! Quiero hacer el siguiente pedido:\n\n';
+  lines.forEach(({ product, qty }) => {
+    text += `- ${qty} x ${product.nombre}` + (CONFIG.mostrarPreciosEnCarrito && typeof product.precio === 'number' ? ` (${formatPrice(product.precio * qty)})` : '') + '\n';
+  });
+  text += `\nTotal: ${cartCount()} ${cartCount() === 1 ? 'perfume' : 'perfumes'}`;
+  if (CONFIG.mostrarPreciosEnCarrito) text += ` - ${formatPrice(cartTotal())}`;
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+function cartTotal() { return cartLines().reduce((sum, { product, qty }) => sum + (product.precio || 0) * qty, 0); }
+
+function renderCart(focusSelector) {
+  const lines = cartLines();
+  const checkout = $('cartCheckout');
+  if (!lines.length) {
+    $('cartItems').innerHTML = '<p class="text-center text-sm text-cream/60 py-8">Tu carrito está vacío. Sumá perfumes con el botón "Agregar al carrito".</p>';
+    $('cartSummary').textContent = '';
+    checkout.href = '#';
+    checkout.setAttribute('aria-disabled', 'true');
+    checkout.classList.add('pointer-events-none', 'opacity-40');
+    $('cartClear').classList.add('hidden');
+    return;
+  }
+  $('cartItems').innerHTML = lines.map(({ product: p, qty }) => `
+    <div class="flex items-center gap-3 border border-line rounded-xl p-3">
+      <img src="${escapeHTML(p.imagen || PLACEHOLDER_IMG)}" alt="" onerror="imgFallback(this)" class="w-12 h-14 object-contain bg-black rounded-md shrink-0">
+      <div class="flex-1 min-w-0">
+        <p class="text-sm leading-snug">${escapeHTML(p.nombre)}</p>
+        ${CONFIG.mostrarPreciosEnCarrito ? `<p class="text-xs text-goldlight mt-0.5">${formatPrice(p.precio)}</p>` : ''}
+      </div>
+      <div class="flex items-center gap-1">
+        <button type="button" data-cart-minus="${p.id}" aria-label="Quitar una unidad de ${escapeHTML(p.nombre)}" class="w-8 h-8 rounded-full border border-line hover:border-gold hover:text-goldlight transition">−</button>
+        <input type="number" inputmode="numeric" min="0" max="${MAX_QTY}" value="${qty}" data-cart-input="${p.id}" aria-label="Cantidad de ${escapeHTML(p.nombre)}"
+          class="w-12 text-center bg-ink border border-line rounded-lg py-1 text-sm focus:border-gold focus:outline-none">
+        <button type="button" data-cart-plus="${p.id}" aria-label="Sumar una unidad de ${escapeHTML(p.nombre)}" class="w-8 h-8 rounded-full border border-line hover:border-gold hover:text-goldlight transition">+</button>
+      </div>
+      <button type="button" data-cart-remove="${p.id}" aria-label="Eliminar ${escapeHTML(p.nombre)} del carrito" class="w-8 h-8 rounded-full text-cream/50 hover:text-red-300 transition">×</button>
+    </div>`).join('');
+  const count = cartCount();
+  $('cartSummary').textContent = `Total: ${count} ${count === 1 ? 'perfume' : 'perfumes'}` + (CONFIG.mostrarPreciosEnCarrito ? ` · ${formatPrice(cartTotal())}` : '');
+  checkout.href = buildCartWhatsAppLink();
+  checkout.removeAttribute('aria-disabled');
+  checkout.classList.remove('pointer-events-none', 'opacity-40');
+  $('cartClear').classList.remove('hidden');
+  if (focusSelector) { const el = $('cartItems').querySelector(focusSelector); if (el) el.focus(); }
+}
+
+function openCart(opener) {
+  cartOpener = opener || $('openCart');
+  renderCart();
+  $('cartModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  $('cartModal').querySelector('[role="dialog"]').focus();
+}
+function closeCart() {
+  if ($('cartModal').classList.contains('hidden')) return;
+  $('cartModal').classList.add('hidden');
+  document.body.style.overflow = '';
+  if (cartOpener && document.contains(cartOpener)) cartOpener.focus();
+}
+function trapCartFocus(e) {
+  const nodes = [...$('cartModal').querySelectorAll('button, a[href], input')].filter((n) => n.offsetParent !== null && n.getAttribute('aria-disabled') !== 'true');
+  if (!nodes.length) return;
+  const first = nodes[0], last = nodes[nodes.length - 1];
+  const dialog = $('cartModal').querySelector('[role="dialog"]');
+  if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+function initCart() {
+  loadCart();
+  refreshCartUI();
+  // "Agregar al carrito" (tarjetas y ventana de detalles): cada clic suma una unidad, sin abrir ninguna ventana
+  document.addEventListener('click', (e) => {
+    const add = e.target.closest('[data-add-cart]');
+    if (add) addToCart(Number(add.dataset.addCart));
+    const open = e.target.closest('[data-open-cart]');
+    if (open) openCart(open);
+  });
+  $('cartClose').addEventListener('click', closeCart);
+  $('cartModal').addEventListener('click', (e) => { if (e.target === $('cartModal')) closeCart(); });
+  $('cartClear').addEventListener('click', () => { cart = {}; saveCart(); refreshCartUI(); showToast('Carrito vaciado'); });
+  // Sumar, restar, quitar o escribir la cantidad de cada línea
+  $('cartItems').addEventListener('click', (e) => {
+    const plus = e.target.closest('[data-cart-plus]'), minus = e.target.closest('[data-cart-minus]'), remove = e.target.closest('[data-cart-remove]');
+    if (plus) { setQty(plus.dataset.cartPlus, cartQty(plus.dataset.cartPlus) + 1); renderCart(`[data-cart-plus="${plus.dataset.cartPlus}"]`); }
+    if (minus) { const id = minus.dataset.cartMinus; setQty(id, cartQty(id) - 1); renderCart(cartQty(id) ? `[data-cart-minus="${id}"]` : '[data-cart-input]'); }
+    if (remove) { setQty(remove.dataset.cartRemove, 0); renderCart('[data-cart-input]'); }
+  });
+  $('cartItems').addEventListener('change', (e) => {
+    const input = e.target.closest('[data-cart-input]');
+    if (!input) return;
+    setQty(input.dataset.cartInput, input.value);
+    renderCart();
+  });
+  document.addEventListener('keydown', (e) => {
+    if ($('cartModal').classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeCart();
+    if (e.key === 'Tab') trapCartFocus(e);
+  });
+}
+
+/* =====================================================================
    7. EVENTOS E INICIALIZACIÓN
    ===================================================================== */
 function init() {
@@ -11778,6 +11990,7 @@ function init() {
   $('footerHours').textContent = CONFIG.horarios;
   $('year').textContent = new Date().getFullYear();
 
+  initCart();
   renderGenderSelect();
   renderCategoryButtons();
   renderCollections();
