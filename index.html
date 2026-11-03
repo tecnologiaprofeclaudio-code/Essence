@@ -214,6 +214,11 @@
     </div>
     <div id="cartItems" class="overflow-y-auto p-5 space-y-3 flex-1"></div>
     <div class="p-5 border-t border-line">
+      <div class="mb-4">
+        <label for="cartName" class="text-xs text-cream/60">Tu nombre (opcional, aparece en el mensaje del pedido)</label>
+        <input id="cartName" type="text" maxlength="60" autocomplete="given-name" placeholder="Ej. María"
+          class="mt-1 w-full bg-ink border border-line rounded-full px-4 py-2.5 text-sm placeholder:text-cream/40 focus:border-gold focus:outline-none">
+      </div>
       <p id="cartSummary" class="text-sm text-cream/80"></p>
       <div class="mt-4 flex items-center justify-between gap-3">
         <button id="cartClear" type="button" class="rounded-full border border-line px-5 py-3 text-sm text-cream/80 hover:border-gold hover:text-goldlight transition">Vaciar carrito</button>
@@ -302,8 +307,8 @@
 const CONFIG = {
   // Número de WhatsApp del negocio, con código de país y sin "+", espacios ni guiones.
   // Argentina (celular): 549 + código de área sin 0 + número.
-  whatsappNumber: '54934353368321',
-  whatsappDisplay: '+54 9 3435 368321', // texto visible en el pie de página
+  whatsappNumber: '5493435368321',
+  whatsappDisplay: '+54 9 3435 36-8321', // texto visible en el pie de página
   instagram: '@essence.crespo',           // se muestra con @; en el enlace se usa sin @
   ciudad: 'Crespo, Entre Ríos',           // ⚠️ confirmá o cambiá
   // true = el carrito y el pedido de WhatsApp muestran precios, subtotales y total.
@@ -11581,9 +11586,9 @@ const imgFallback = (img) => { img.onerror = null; img.src = PLACEHOLDER_IMG; };
 function buildWhatsAppLink(product) {
   const text = product
     ? (product.stock
-        ? `Hola Essence Crespo! Quiero pedir el perfume ${product.nombre} (${product.tamano}). ¿Me pasan más información?`
-        : `Hola Essence Crespo! Quisiera saber cuándo vuelve a estar disponible el perfume ${product.nombre}.`)
-    : 'Hola Essence Crespo! Quisiera hacer una consulta.';
+        ? `Hola Essence Crespo!${customerGreeting()} Quiero pedir el perfume ${product.nombre} (${product.tamano}). ¿Me pasan más información?`
+        : `Hola Essence Crespo!${customerGreeting()} Quisiera saber cuándo vuelve a estar disponible el perfume ${product.nombre}.`)
+    : `Hola Essence Crespo!${customerGreeting()} Quisiera hacer una consulta.`;
   return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 
@@ -11880,6 +11885,18 @@ let cart = {};
 let cartOpener = null;
 let toastTimer = null;
 
+// Nombre del cliente (opcional): WhatsApp no permite que una página lea el nombre del perfil de quien escribe,
+// por eso se pide en el carrito, se recuerda en este navegador y se agrega al mensaje del pedido.
+const NAME_KEY = 'essence-crespo-nombre';
+function cleanName(raw) { return String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 60); }
+function loadCustomerName() { try { return cleanName(localStorage.getItem(NAME_KEY)); } catch (error) { return ''; } }
+let customerName = loadCustomerName();
+function customerGreeting() { return customerName ? ` Soy ${customerName}.` : ''; }
+function refreshGeneralLinks() {
+  const link = buildWhatsAppLink(null);
+  ['navWhatsapp', 'footerWhatsapp', 'aboutWhatsapp', 'faqWhatsapp'].forEach((id) => { if ($(id)) $(id).href = link; });
+}
+
 function loadCart() {
   try {
     const saved = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
@@ -11935,7 +11952,7 @@ function refreshCartUI() {
 
 function buildCartWhatsAppLink() {
   const lines = cartLines();
-  let text = 'Hola Essence Crespo! Quiero hacer el siguiente pedido:\n\n';
+  let text = `Hola Essence Crespo!${customerGreeting()} Quiero hacer el siguiente pedido:\n\n`;
   lines.forEach(({ product, qty }) => {
     const priced = CONFIG.mostrarPreciosEnCarrito && typeof product.precio === 'number';
     text += `- ${qty} x ${product.nombre}` + (priced ? (qty > 1 ? ` (${formatPrice(product.precio)} c/u)` : '') + ` = ${formatPrice(product.precio * qty)}` : '') + '\n';
@@ -12012,6 +12029,13 @@ function trapCartFocus(e) {
 function initCart() {
   loadCart();
   refreshCartUI();
+  $('cartName').value = customerName;
+  $('cartName').addEventListener('input', (e) => {
+    customerName = cleanName(e.target.value);
+    try { localStorage.setItem(NAME_KEY, customerName); } catch (error) { /* sin almacenamiento: el nombre se usa solo en esta visita */ }
+    if (cartLines().length) $('cartCheckout').href = buildCartWhatsAppLink();
+    refreshGeneralLinks();
+  });
   // "Agregar al carrito" (tarjetas y ventana de detalles): cada clic suma una unidad, sin abrir ninguna ventana
   document.addEventListener('click', (e) => {
     const add = e.target.closest('[data-add-cart]');
